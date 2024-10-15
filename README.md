@@ -1,8 +1,12 @@
 # DOTS-mp
 
+This is a starter project for the DOTS Multiplayer Game Tutorial.
 
+Inspiration for this project comes from Chris Courses Online Multiplayer Game Tutorial (https://www.youtube.com/watch?v=Wcvqnx14cZA) available on YouTube.
 
 ## Getting started
+
+To get started, download this repo and double click `index.html` to see the single-player game we'll base our multiplayer-game off of.
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 

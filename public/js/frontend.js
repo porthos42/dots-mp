@@ -13,26 +13,27 @@ const y = canvas.height / 2
 
 const frontEndPlayers = {}
 
-socket.on('updatePlayers', (backendPlayers) => {
-  for (const id in backendPlayers) {
-    const backendPlayer = backendPlayers[id]
+socket.on('updatePlayers', (backEndPlayers) => {
+  for (const id in backEndPlayers) {
+    const backEndPlayer = backEndPlayers[id]
 
     if (!frontEndPlayers[id]) {
       frontEndPlayers[id] = new Player({
-        x: backendPlayer.x, 
-        y: backendPlayer.y,
+        x: backEndPlayer.x, 
+        y: backEndPlayer.y,
         radius: 10,
-        color: 'hsl(0, 100%, 50% '})
+        color: backEndPlayer.color
+      })
     }
   }
 
   for (const id in frontEndPlayers) {
-    if (!backendPlayers[id]) {
+    if (!backEndPlayers[id]) {
       delete frontEndPlayers[id]
     }
   }
 
-  // console.log(players)
+  console.log(backEndPlayers)
 })
 
 let animationId

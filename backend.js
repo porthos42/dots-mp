@@ -15,33 +15,24 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
 
-const players = {
-  sdjhfkjdshfkjdshf: {
-    x: 100,
-    y: 100,
-    color: 'yellow'
-  },
-  dsfdsfsdfdsffdffe: {
-    x: 200,
-    y: 200,
-    color: 'red'
-  }
-}
-
+const backEndPlayers = {}
 
 io.on('connection', (socket) => {
   console.log('a user connected')
-  players[socket.id] = {
-    x: 500 * Math.random(),
-    y: 500 * Math.random()
+  backEndPlayers[socket.id] = {
+    x: 1024 * Math.random(),
+    y: 576 * Math.random(),
+    color: `hsl(${360 * Math.random()}, 100%, 50%)`
   }
+  
+  console.log(backEndPlayers)
+  console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
-  console.log(players)
-  io.emit('updatePlayers', players)
+  io.emit('updatePlayers', backEndPlayers)
   socket.on('disconnect', (reason) => {
     console.log(reason)
-    delete players[socket.id]
-    io.emit('updatePlaers', players)
+    delete backEndPlayers[socket.id]
+    io.emit('updatePlayers', backEndPlayers)
   })
 })
 

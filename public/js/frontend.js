@@ -42,8 +42,13 @@ socket.on('updatePlayers', (backEndPlayers) => {
           frontEndPlayers[id].y += input.dy
         })
       } else {
-        frontEndPlayers[id].x = backEndPlayer.x
-        frontEndPlayers[id].y = backEndPlayer.y
+        // for all other players
+        gsap.to(frontEndPlayers[id], {
+          x: backEndPlayer.x,
+          y: backEndPlayer.y,
+          duration: 0.015,
+          ease: 'linear'
+        })
       }
     }
   }

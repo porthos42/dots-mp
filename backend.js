@@ -19,6 +19,7 @@ const backEndPlayers = {}
 
 io.on('connection', (socket) => {
   console.log('a user connected')
+
   backEndPlayers[socket.id] = {
     x: 1024 * Math.random(),
     y: 576 * Math.random(),
@@ -29,6 +30,7 @@ io.on('connection', (socket) => {
   console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
   io.emit('updatePlayers', backEndPlayers)
+  
   socket.on('disconnect', (reason) => {
     console.log(reason)
     delete backEndPlayers[socket.id]

@@ -5,7 +5,7 @@ const app = express()
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require('socket.io')
-const io = new Server(server)
+const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 const port = 3000
 
@@ -38,6 +38,11 @@ io.on('connection', (socket) => {
 
   console.log(players)
   io.emit('updatePlayers', players)
+  socket.on('disconnect', (reason) => {
+    console.log(reason)
+    delete players[socket.id]
+    io.emit('updatePlaers', players)
+  })
 })
 
 server.listen(port, () => {

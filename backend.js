@@ -23,15 +23,22 @@ io.on('connection', (socket) => {
   backEndPlayers[socket.id] = {
     x: 1024 * Math.random(),
     y: 576 * Math.random(),
-    color: `hsl(${360 * Math.random()}, 100%, 50%)`
+    color: `hsl(${360 * Math.random()}, 100%, 50%)`,
+    sequenceNumber: 0
   }
   
   console.log(backEndPlayers)
   console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
   io.emit('updatePlayers', backEndPlayers)
+  
   const SPEED = 10
-  socket.on('keydown', (keycode) => {
+  socket.on('keydown', ({ keycode, sequenceNumber }) => {
+    const backEndPlayer = backEndPlayers[socket.id]
+
+    if (!backEndPlayers[socket.id]) return
+
+    backEndPlayers[socket.id].sequenceNumber = sequenceNumber
     switch(keycode) {
       case 'KeyW':
         backEndPlayers[socket.id].y -= SPEED

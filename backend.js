@@ -30,13 +30,37 @@ io.on('connection', (socket) => {
   console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
   io.emit('updatePlayers', backEndPlayers)
+  socket.on('keydown', (keycode) => {
+    switch(keycode) {
+      case 'KeyW':
+        backEndPlayers[socket.id].y -= 5
+        break
   
+      case 'KeyA':
+        backEndPlayers[socket.id].x -= 5
+        break
+  
+      case 'KeyS':
+        backEndPlayers[socket.id].y += 5
+        break
+        
+      case 'KeyD':
+        backEndPlayers[socket.id].x += 5
+        break
+    }
+  })  
+
   socket.on('disconnect', (reason) => {
     console.log(reason)
     delete backEndPlayers[socket.id]
     io.emit('updatePlayers', backEndPlayers)
   })
 })
+
+// backend ticker
+setInterval(() => {
+  io.emit('updatePlayers', backEndPlayers)
+}, 15)
 
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

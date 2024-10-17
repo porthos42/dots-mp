@@ -94,9 +94,10 @@ setInterval(() => {
   for (const id in backEndProjectiles) {
     backEndProjectiles[id].x += backEndProjectiles[id].velocity.x
     backEndProjectiles[id].y += backEndProjectiles[id].velocity.y
-    console.log('backend projectile x,y position for projectile '
-      + id + ': ' + backEndProjectiles[id].x +','
-      + backEndProjectiles[id].y)
+
+    //console.log('backend projectile x,y position for projectile '
+    //  + id + ': ' + backEndProjectiles[id].x +','
+    //  + backEndProjectiles[id].y)
   }
 
   // update positions

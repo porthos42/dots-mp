@@ -3,6 +3,7 @@ const app = express()
 
 // socket.io setup
 const http = require('http');
+const { console } = require('inspector');
 const server = http.createServer(app);
 const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
@@ -35,6 +36,13 @@ io.on('connection', (socket) => {
   console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
   io.emit('updatePlayers', backEndPlayers)
+
+  socket.on('initCanvas', ({ width, height }) => {
+    backEndPlayers[socket.id].canvas = {
+      width,
+      height
+    }
+  })
 
   socket.on('shoot', ({x, y, angle}) => {
     projectileId++
@@ -95,6 +103,19 @@ setInterval(() => {
     backEndProjectiles[id].x += backEndProjectiles[id].velocity.x
     backEndProjectiles[id].y += backEndProjectiles[id].velocity.y
 
+    const PROJECTILE_RADIUS = 5
+    if (
+      backEndProjectiles[id].x - PROJECTILE_RADIUS >= 
+      backEndPlayers[backEndProjectiles[id].playerId]?.canvas?.width ||
+      backEndProjectiles[id].x + PROJECTILE_RADIUS <= 0 ||
+      backEndProjectiles[id].y - PROJECTILE_RADIUS >= 
+      backEndPlayers[backEndProjectiles[id].playerId]?.canvas?.height ||
+      backEndProjectiles[id].y + PROJECTILE_RADIUS <= 0 
+      ) {
+        delete backEndProjectiles[id]
+      }
+
+    console.log(backEndProjectiles) 
     //console.log('backend projectile x,y position for projectile '
     //  + id + ': ' + backEndProjectiles[id].x +','
     //  + backEndProjectiles[id].y)

@@ -16,6 +16,11 @@ const y = canvas.height / 2
 const frontEndPlayers = {}
 const frontEndProjectiles = {}
 
+socket.on('connect', () => {
+  console.log('CONNECT')
+  socket.emit('initCanvas', {width: canvas.width, height: canvas.height})
+})
+
 socket.on('updateProjectiles', (backEndProjectiles) => {
   for (const id in backEndProjectiles) {
     const backEndProjectile = backEndProjectiles[id]
@@ -33,6 +38,15 @@ socket.on('updateProjectiles', (backEndProjectiles) => {
       frontEndProjectiles[id].y += backEndProjectiles[id].velocity.y
     }
   }
+
+  for (const frontEndProjectileId in frontEndProjectiles) {
+    if (!backEndProjectiles[frontEndProjectileId]) {
+      delete frontEndProjectiles[frontEndProjectileId]
+    }
+  }
+
+
+
 })
 
 socket.on('updatePlayers', (backEndPlayers) => {

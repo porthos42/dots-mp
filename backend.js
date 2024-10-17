@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
 })
 
 const backEndPlayers = {}
+const backEndProjectiles = {}
+
+const SPEED = 10
+let projectileId = 0
 
 io.on('connection', (socket) => {
   console.log('a user connected')
@@ -31,8 +35,24 @@ io.on('connection', (socket) => {
   console.log('backEndPlayer color: ' + backEndPlayers[socket.id].color)
 
   io.emit('updatePlayers', backEndPlayers)
-  
-  const SPEED = 10
+
+  socket.on('shoot', ({x, y, angle}) => {
+    projectileId++
+
+    const velocity = {
+      x: Math.cos(angle) * 5,
+      y: Math.sin(angle) * 5
+    }
+
+    backEndProjectiles[projectileId] = {
+      x, 
+      y, 
+      velocity,
+      playerId: socket.id
+    }
+  })
+
+
   socket.on('keydown', ({ keycode, sequenceNumber }) => {
     const backEndPlayer = backEndPlayers[socket.id]
 

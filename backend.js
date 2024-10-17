@@ -99,7 +99,8 @@ setInterval(() => {
       + backEndProjectiles[id].y)
   }
 
-  // update player positions
+  // update positions
+  io.emit('updateProjectiles', backEndProjectiles)
   io.emit('updatePlayers', backEndPlayers)
 }, 15)
 

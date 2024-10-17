@@ -19,7 +19,7 @@ addEventListener('click', (event) => {
     y: playerPosition.y,
     angle
   })
-  
+
   // frontEndProjectiles.push(
   //   new Projectile({
   //     x: playerPosition.x,
@@ -30,5 +30,5 @@ addEventListener('click', (event) => {
   //   })
   // )
 
-  console.log(frontEndProjectiles)
+  // console.log(frontEndProjectiles)
 })

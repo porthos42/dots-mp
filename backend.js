@@ -31,7 +31,8 @@ io.on('connection', (socket) => {
     x: 1024 * Math.random(),
     y: 576 * Math.random(),
     color: `hsl(${360 * Math.random()}, 100%, 50%)`,
-    sequenceNumber: 0
+    sequenceNumber: 0,
+    score: 0
   }
   
   console.log(backEndPlayers)
@@ -137,8 +138,12 @@ setInterval(() => {
         backEndProjectiles[id].y - backEndPlayer.y
       )
 
-      if (DISTANCE < PROJECTILE_RADIUS + backEndPlayer.radius &&
-        backEndProjectiles[id].playerId !== playerId) {
+      // Collision detection
+      if (
+        DISTANCE < PROJECTILE_RADIUS + backEndPlayer.radius &&
+        backEndProjectiles[id].playerId !== playerId
+      ) {
+        backEndPlayers[backEndProjectiles[id].playerId].score++
         delete backEndProjectiles[id]
         delete backEndPlayers[playerId]
         break

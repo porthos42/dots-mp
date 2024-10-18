@@ -143,7 +143,8 @@ setInterval(() => {
         DISTANCE < PROJECTILE_RADIUS + backEndPlayer.radius &&
         backEndProjectiles[id].playerId !== playerId
       ) {
-        backEndPlayers[backEndProjectiles[id].playerId].score++
+        if (backEndPlayers[backEndProjectiles[id].playerId])
+          backEndPlayers[backEndProjectiles[id].playerId].score++
         delete backEndProjectiles[id]
         delete backEndPlayers[playerId]
         break

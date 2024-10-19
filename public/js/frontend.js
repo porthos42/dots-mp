@@ -249,3 +249,9 @@ window.addEventListener('keyup', (event) => {
       break
   }
 })
+
+document.querySelector('#usernameForm').addEventListener('submit', (event) => {
+  event.preventDefault()
+
+  console.log(document.querySelector('#usernameInput').value)
+})

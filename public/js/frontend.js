@@ -94,6 +94,11 @@ socket.on('updatePlayers', (backEndPlayers) => {
         parentDiv.appendChild(div)
       })
 
+      frontEndPlayers[id].target = {
+        x: backEndPlayer.x,
+        y: backEndPlayer.y
+      }
+
       if (id === socket.id) {
         // if a player already exists
         frontEndPlayers[id].x = backEndPlayer.x
@@ -105,18 +110,10 @@ socket.on('updatePlayers', (backEndPlayers) => {
           playerInputs.splice(0, lastBackendInputIndex + 1)
         
         playerInputs.forEach(input => {
-          frontEndPlayers[id].x += input.dx
-          frontEndPlayers[id].y += input.dy
+          frontEndPlayers[id].target.x += input.dx
+          frontEndPlayers[id].target.y += input.dy
         })
-      } else {
-        // for all other players
-        gsap.to(frontEndPlayers[id], {
-          x: backEndPlayer.x,
-          y: backEndPlayer.y,
-          duration: 0.015,
-          ease: 'linear'
-        })
-      }
+      } 
     }
   }
 
@@ -144,8 +141,14 @@ function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height)
 
   for (const id in frontEndPlayers) {
-    const player = frontEndPlayers[id]
-    player.draw()
+    const frontEndPlayer = frontEndPlayers[id]
+
+    if (frontEndPlayer.target) {
+      frontEndPlayers[id].x += (frontEndPlayers[id].target.x - frontEndPlayers[id].x) * 0.5
+      frontEndPlayers[id].y += (frontEndPlayers[id].target.y - frontEndPlayers[id].y) * 0.5
+    }
+
+    frontEndPlayer.draw()
   }  
 
   for (const id in frontEndProjectiles) {
@@ -175,7 +178,7 @@ const keys = {
   }
 }
 
-const SPEED = 10
+const SPEED = 5
 playerInputs = []
 let sequenceNumber = 0
 setInterval(() => {
